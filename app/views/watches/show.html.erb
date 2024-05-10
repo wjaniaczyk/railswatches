@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @watch %>
+
+<div>
+  <%= link_to "Edit this watch", edit_watch_path(@watch) %> |
+  <%= link_to "Back to watches", watches_path %>
+
+  <%= button_to "Destroy this watch", @watch, method: :delete %>
+</div>
