@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_092824) do
   create_table "watches", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.decimal "category", precision: 10, scale: 2, default: "0.0"
+    t.integer "category", default: 0
     t.decimal "price", precision: 10, scale: 2, default: "0.0"
     t.string "photo_url"
     t.datetime "created_at", null: false
