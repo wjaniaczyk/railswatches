@@ -1,5 +1,6 @@
 class WatchesController < ApplicationController
   before_action :set_watch, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!, except: [:index, :show]
 
   # GET /watches or /watches.json
   def index
