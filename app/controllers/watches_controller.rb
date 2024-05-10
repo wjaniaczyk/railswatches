@@ -1,6 +1,7 @@
 class WatchesController < ApplicationController
   before_action :set_watch, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /watches or /watches.json
   def index
@@ -13,7 +14,8 @@ class WatchesController < ApplicationController
 
   # GET /watches/new
   def new
-    @watch = Watch.new
+    # @watch = Watch.new
+    @watch = current_user.watches.build
   end
 
   # GET /watches/1/edit
@@ -22,7 +24,8 @@ class WatchesController < ApplicationController
 
   # POST /watches or /watches.json
   def create
-    @watch = Watch.new(watch_params)
+    # @watch = Watch.new(watch_params)
+    @watch = current_user.watches.build(watch_params)
 
     respond_to do |format|
       if @watch.save
@@ -58,6 +61,10 @@ class WatchesController < ApplicationController
     end
   end
 
+  def correct_user
+    @watch = current_user.watches.find_by(id params[:id])
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_watch
@@ -66,6 +73,6 @@ class WatchesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def watch_params
-      params.require(:watch).permit(:name, :description, :category, :price, :photo_url)
+      params.require(:watch).permit(:name, :description, :category, :price, :photo_url, :user_id)
     end
 end

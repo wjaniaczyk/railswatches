@@ -23,7 +23,7 @@
 
   <div>
     <%= form.label :category, style: "display: block" %>
-    <%= form.number_field :category %>
+    <%= form.select :category, Watch.categories.keys %>
   </div>
 
   <div>
@@ -34,6 +34,11 @@
   <div>
     <%= form.label :photo_url, style: "display: block" %>
     <%= form.text_field :photo_url %>
+  </div>
+
+   <div>
+    <% form.label :user_id, style: "display: block" %>
+    <%= form.number_field :user_id, id: :friend_user_id, value: current_user.id, type: :hidden %>
   </div>
 
   <div>
