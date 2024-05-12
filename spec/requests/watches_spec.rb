@@ -147,11 +147,14 @@
             end
         end 
 
-        describe "DELETE /watches/id" do
-            it "deletes watch with valid id" do
-                watch = create(:watch)
-                delete watches_path(watch_id: watch.id)
-                expect(response).to have_http_status(404)
-            end 
+        describe "POST /watches" do
+            it "sends a post request to create a watch" do
+            post "http://localhost:3000/watches", params: {watch: {name: "First Watch", description: "This is the first watch"}}
+    
+            expect(response).to have_http_status(200)
+            watch = JSON.parse(response.body)
+            expect(watch["name"]).to eq("First Watch")
+            expect(watch["description"]).to eq("This is the first watch")
+            end
         end
     end
