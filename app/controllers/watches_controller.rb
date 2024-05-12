@@ -3,7 +3,8 @@ include Orderable
 
   before_action :set_watch, only: %i[ show edit update destroy ]
   before_action :authenticate_user!, except: [:index, :show]
-  # before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :authorize_user, only: [:destroy]
 
   # GET /watches or /watches.json
   # GET /watches?name=a 
@@ -77,6 +78,12 @@ include Orderable
   end
 
   private
+
+    def authorize_user
+      watch = @watch || Watch
+      authorize watch
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_watch
       @watch = Watch.find(params[:id])
