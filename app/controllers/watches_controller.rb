@@ -22,12 +22,11 @@ include Orderable
 
     @watches = @watches.order(ordering_params(params)).all
 
-    render json: @watches
+    # render json: @watches
   end
  
   # GET /watches/1 or /watches/1.json
   def show
-    # render json: @watch
   end
 
   # # GET /watches/new
@@ -45,31 +44,58 @@ include Orderable
     # @watch = Watch.new(watch_params)
     @watch = current_user.watches.build(watch_params)
 
-    if @watch.save
-      render json: @watch
-    else
-      render json: {error: 'Error creating watch'}
+    # if @watch.save
+    #   render json: @watch
+    # else
+    #   render json: {error: 'Error creating watch'}
+    # end
+
+    respond_to do |format|
+      if @watch.save
+        format.html { redirect_to watch_url(@watch), notice: "Watch was successfully created." }
+        format.json { render :show, status: :created, location: @watch }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @watch.errors, status: :unprocessable_entity }
+      end
     end
 
   end
 
   # PATCH/PUT /watches/1 or /watches/1.json
   def update
-    @watch = Watch.find(params[:id])
-        if @post.update(watch_params)
-            render json: @watch
-        else
-            render json: {error: 'Error updating watch'}
+    # @watch = Watch.find(params[:id])
+        # if @post.update(watch_params)
+        #     render json: @watch
+        # else
+        #     render json: {error: 'Error updating watch'}
+        # end
+
+        respond_to do |format|
+          if @watch.update(watch_params)
+            format.html { redirect_to watch_url(@watch), notice: "Watch was successfully updated." }
+            format.json { render :show, status: :ok, location: @watch }
+          else
+            format.html { render :edit, status: :unprocessable_entity }
+            format.json { render json: @watch.errors, status: :unprocessable_entity }
+          end
         end
   end
 
   # DELETE /watches/1 or /watches/1.json
   def destroy
-    @watch = Watch.find(params[:id])
-    if @watch.destroy
-        render status: :ok
-    else
-        render json: {error: 'Error deleting watch'}
+    # @watch = Watch.find(params[:id])
+    # if @watch.destroy
+    #     render status: :ok
+    # else
+    #     render json: {error: 'Error deleting watch'}
+    # end
+
+    @watch.destroy!
+
+    respond_to do |format|
+      format.html { redirect_to watch_url, notice: "Watch was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
